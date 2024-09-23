@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import ReactPlayer from 'react-player';
+import { Route, Routes } from 'react-router-dom';
+import { VideoPlayer } from './VideoPlayer'; // Import component VideoPlayer
+import './App.css';
+
 // Hàm kiểm tra trình duyệt
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -11,6 +14,7 @@ const isSupportedBrowser = () => {
 
 export function App(props) {
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
+
   useEffect(() => {
     // Kiểm tra trình duyệt khi component được mount
     setIsBrowserSupported(isSupportedBrowser());
@@ -24,6 +28,7 @@ export function App(props) {
         event.stopImmediatePropagation();
       }
     };
+
     const handleDevToolsDetection = () => {
       // Kỹ thuật phát hiện DevTools mở
       const isDevToolsOpen = window.outerHeight - window.innerHeight > 100 ||
@@ -33,44 +38,38 @@ export function App(props) {
         // Optionally restrict access or redirect
       }
     };
+
     const handleContextMenu = (event) => {
       // Ngăn menu chuột phải
       event.preventDefault();
     };
 
     document.addEventListener('contextmenu', handleContextMenu);
-    document.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('resize', handleDevToolsDetection);
+    // document.addEventListener('keydown', handleKeyDown);
+    // window.addEventListener('resize', handleDevToolsDetection);
 
+    // Cleanup các event listeners khi component bị unmount
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
-      document.removeEventListener('keydown', handleKeyDown);
-      // window.addEventListener('resize', handleDevToolsDetection);
+      // document.removeEventListener('keydown', handleKeyDown);
+      // window.removeEventListener('resize', handleDevToolsDetection); // Bổ sung dòng này
     };
   }, []);
 
-  if (!isSupportedBrowser()) {
+  if (!isBrowserSupported) {
     return <div>Trình duyệt của bạn không được hỗ trợ để xem video này.</div>;
   }
+
   return (
-    <div className="video-wrapper">
-      <ReactPlayer
-        url="https://www.dropbox.com/scl/fi/bb7gj60p96dejr12mz5i7/Short-Vertical.mp4?rlkey=wh3azk0e34rqrqr3h1hm12v9o&st=jqgsmo92&raw=1"
-        width="100%"
-        height="100%"
-        controls={true} // Hiển thị điều khiển phát lại
-        config={{
-          file: {
-            attributes: {
-              controlsList: 'nodownload', // Không cho phép tải xuống qua menu controls
-              onContextMenu: e => e.preventDefault() // Vô hiệu hóa menu chuột phải
-            }
-          }
-        }}
-      />
-    </div>
+    <Routes>
+      <Route path="/video/:order_id/:video_id" element={<VideoPlayer />} />
+      {/* Có thể thêm các route khác ở đây nếu cần */}
+    </Routes>
   );
 }
 
 // Log to console
 console.log('Hello console');
+
+
+export default App;
