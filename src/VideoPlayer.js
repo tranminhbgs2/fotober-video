@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom'; // Import useParams để lấy tham số URL
-import axios from 'axios'; // Import axios
 
 export function VideoPlayer() {
   const { order_id, video_id } = useParams(); // Lấy order_id và video_id từ URL
   const [videoUrl, setVideoUrl] = useState(null); // State để lưu trữ URL video
+  const [orderInfo, setOrderInfo] = useState(null); // State để lưu thông tin đơn hàng
 
   useEffect(() => {
     const fetchVideo = async () => {
-      const url = `https://orders.fotober.com/api/get-video?order_id=${order_id}&video_id=${video_id}`;
-      console.log('Fetching from URL:', url);
-
       try {
-        const response = await axios.get(url);
-        console.log('API Response:', response.data); // Ghi lại phản hồi
-        // Lấy link video từ data
-        // Kiểm tra status và lấy link video
-        if (response.status === 'success') {
-          setVideoUrl(response.data.link); // Lấy link video từ data
-        } else {
-          console.error('Error in API response:', response.message);
+        const response = await fetch(`/api/get-video?order_id=${order_id}&video_id=${video_id}`);
+        const text = await response.text(); // Lấy phản hồi dưới dạng văn bản
+        
+        const data = JSON.parse(text); // Chuyển đổi văn bản thành JSON
+    
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
         }
+        setVideoUrl(data.data.link); // Lưu URL video
+        setOrderInfo(data.data.order); // Lưu thông tin đơn hàng
       } catch (error) {
         console.error('Error fetching video:', error);
       }
@@ -39,8 +37,6 @@ export function VideoPlayer() {
       <ReactPlayer
         url={videoUrl} // Sử dụng URL video từ API
         className="react-player"
-        width="100%"
-        height="100%"
         controls={true}
         config={{
           file: {
@@ -51,6 +47,15 @@ export function VideoPlayer() {
           }
         }}
       />
+        <div className="order-info">
+          <h3>Order Information</h3>
+          <p><strong>Order ID:</strong> {orderInfo.id}</p>
+          <p><strong>Name:</strong> {orderInfo.name}</p>
+          <p><strong>Code:</strong> {orderInfo.code}</p>
+          <p><strong>Cost:</strong> ${orderInfo.cost}</p>
+          <p><strong>Status:</strong> {orderInfo.status}</p>
+          <p><strong>Notes:</strong> {orderInfo.notes}</p>
+        </div>
     </div>
   );
 }
