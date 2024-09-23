@@ -16,7 +16,12 @@ export function VideoPlayer() {
         const response = await axios.get(url);
         console.log('API Response:', response.data); // Ghi lại phản hồi
         // Lấy link video từ data
-        setVideoUrl(data.data.link); // Sử dụng link từ dữ liệu API
+        // Kiểm tra status và lấy link video
+        if (response.status === 'success') {
+          setVideoUrl(response.data.link); // Lấy link video từ data
+        } else {
+          console.error('Error in API response:', response.message);
+        }
       } catch (error) {
         console.error('Error fetching video:', error);
       }
