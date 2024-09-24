@@ -61,9 +61,10 @@ export function App(props) {
     
     // Kiểm tra ngay lập tức nếu DevTools đã mở
     if (isDevToolsOpen()) {
+    console.log('DevTools is open1')
       setIsDevToolsBlocked(true);
         onDevTools(); // Gọi hàm cảnh báo khi phát hiện
-      alert('DevTools is detected. Please close DevTools to access the site.');
+      alert('DevTools is detected. Please close DevTools to access the site0.');
     }
 
     const handleContextMenu = (event) => {
@@ -74,7 +75,7 @@ export function App(props) {
       // Phát hiện nếu DevTools mở khi resize cửa sổ
       if (isDevToolsOpen()) {
         setIsDevToolsBlocked(true);
-        alert('DevTools is detected. Please close DevTools to access the site.');
+        alert('DevTools is detected. Please close DevTools to access the site1.');
       }
     };
 
@@ -109,9 +110,6 @@ export function App(props) {
     </Routes>
   );
 }
-
-// Log to console
-console.log('Hello console');
 
 
 export default App;
