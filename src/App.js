@@ -23,12 +23,18 @@ function onDevTools () {
   setTimeout(console.clear.bind(console))
   setTimeout(() => {
     console.log('DevTools is open')
+      if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
       alert('DevTools is detected. Please close DevTools to access the site.');
+        window.location.reload(); // Tự động reload lại trang
+      // Ẩn hoặc khóa giao diện nếu DevTools mở
+      document.body.innerHTML = "<h1>DevTools is open. Access is blocked.</h1>";
+    }
   }, 10);
 }
 class DevToolsChecker extends Error {
   get message() {
     onDevTools();
+    return '';
   }
 }
 export function App(props) {
@@ -38,7 +44,11 @@ export function App(props) {
   useEffect(() => {
     // Kiểm tra trình duyệt khi component được mount
     setIsBrowserSupported(isSupportedBrowser());
-    console.log(new DevToolsChecker());
+    // Kiểm tra DevTools thông qua console.log
+    const detectDevTools = () => {
+      const devToolsChecker = new DevToolsChecker();
+      console.log(devToolsChecker);
+    };
 
     const handleKeyDown = (event) => {
       // Ngăn phím F12 và Ctrl+U (Xem mã nguồn)
@@ -54,6 +64,7 @@ export function App(props) {
     // Kiểm tra ngay lập tức nếu DevTools đã mở
     if (isDevToolsOpen()) {
       setIsDevToolsBlocked(true);
+        onDevTools(); // Gọi hàm cảnh báo khi phát hiện
       alert('DevTools is detected. Please close DevTools to access the site.');
     }
 
@@ -69,6 +80,8 @@ export function App(props) {
       }
     };
 
+    detectDevTools(); // Kiểm tra khi trang load
+    
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
     window.addEventListener('resize', handleDevToolsDetection);
