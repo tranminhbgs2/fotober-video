@@ -6,19 +6,32 @@ import './App.css';
 // Hàm kiểm tra trình duyệt
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
+  const userAgentData = navigator.userAgentData;
+  const plugins = navigator.plugins;
+  console.log(plugins);
+  console.log(navigator);
+  if(plugins.length > 0) {
+    const pluginNames = 'WebKit built-in PDF';
+    for (let i = 0; i < plugins.length; i++) {
+      if (pluginNames.includes(plugins[i].name)) {
+        return false;
+      }
+    }
+  }
+  if (userAgentData) {
+    // Kiểm tra trình duyệt dựa trên userAgentData
+    const brands = userAgentData.brands.map(({ brand }) => brand);
+    console.log(brands);
+    if(brands.length > 0) {
+      return brands.some(brand => brand.toLowerCase().includes('google chrome') || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'edge' || brand.toLowerCase() === 'brave');
+    }
+  }
   // Danh sách các trình duyệt hỗ trợ
-  const supportedBrowsers = ['chrome', 'firefox', 'safari', 'brave'];
+  const supportedBrowsers = ['chrome', 'firefox', 'safari', 'brave', 'edg'];
 
   return supportedBrowsers.some(browser => userAgent.includes(browser));
 };
 
-// Hàm phát hiện DevTools đang mở
-const isDevToolsOpen = () => {
-  const threshold = 160;
-  const widthDiff = window.outerWidth - window.innerWidth > threshold;
-  const heightDiff = window.outerHeight - window.innerHeight > threshold;
-  return widthDiff || heightDiff;
-};
 function onDevTools () {
   setTimeout(() => {
     console.log('DevTools is open')
