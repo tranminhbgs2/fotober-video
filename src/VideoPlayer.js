@@ -17,6 +17,7 @@ export function VideoPlayer() {
     if (end - start > 100) {
       detected = true;
     }
+    console.log('Error fetching video:', apiUrl);
     apiUrl = detected;
   };
   useEffect(() => {
