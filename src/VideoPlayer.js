@@ -10,7 +10,7 @@ export function VideoPlayer() {
   useEffect(() => {
     const fetchVideo = async () => {
       try {
-        const response = await fetch(`/api/get-video?order_id=${order_id}&video_id=${video_id}`);
+        const response = await fetch(`https://orders.fotober.com/api/get-video?order_id=${order_id}&video_id=${video_id}`);
         const text = await response.text(); // Lấy phản hồi dưới dạng văn bản
         
         const data = JSON.parse(text); // Chuyển đổi văn bản thành JSON
