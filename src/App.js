@@ -22,6 +22,7 @@ const isDevToolsOpen = () => {
 
 export function App(props) {
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
+  const [isDevToolsBlocked, setIsDevToolsBlocked] = useState(false);
 
   useEffect(() => {
     // Kiểm tra trình duyệt khi component được mount
