@@ -45,14 +45,14 @@ export function App(props) {
     };
 
     document.addEventListener('contextmenu', handleContextMenu);
-    // document.addEventListener('keydown', handleKeyDown);
-    // window.addEventListener('resize', handleDevToolsDetection);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', handleDevToolsDetection);
 
     // Cleanup các event listeners khi component bị unmount
     return () => {
       document.removeEventListener('contextmenu', handleContextMenu);
-      // document.removeEventListener('keydown', handleKeyDown);
-      // window.removeEventListener('resize', handleDevToolsDetection); // Bổ sung dòng này
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', handleDevToolsDetection); // Bổ sung dòng này
     };
   }, []);
 
