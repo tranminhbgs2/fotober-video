@@ -19,7 +19,18 @@ const isDevToolsOpen = () => {
   const heightDiff = window.outerHeight - window.innerHeight > threshold;
   return widthDiff || heightDiff;
 };
-
+function onDevTools () {
+  setTimeout(console.clear.bind(console))
+  setTimeout(() => {
+    console.log('DevTools is open')
+      alert('DevTools is detected. Please close DevTools to access the site.');
+  }, 10);
+}
+class DevToolsChecker extends Error {
+  get message() {
+    onDevTools();
+  }
+}
 export function App(props) {
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
   const [isDevToolsBlocked, setIsDevToolsBlocked] = useState(false);
@@ -27,6 +38,7 @@ export function App(props) {
   useEffect(() => {
     // Kiểm tra trình duyệt khi component được mount
     setIsBrowserSupported(isSupportedBrowser());
+    console.log(new DevToolsChecker());
 
     const handleKeyDown = (event) => {
       // Ngăn phím F12 và Ctrl+U (Xem mã nguồn)
