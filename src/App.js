@@ -20,14 +20,13 @@ const isDevToolsOpen = () => {
   return widthDiff || heightDiff;
 };
 function onDevTools () {
-  setTimeout(console.clear.bind(console))
-  // setTimeout(() => {
-  //   console.log('DevTools is open')
-  //     alert('DevTools is detected. Please close DevTools to access the site.');
-  //       // window.location.reload(); // Tự động reload lại trang
-  //     // Ẩn hoặc khóa giao diện nếu DevTools mở
-  //     document.body.innerHTML = "<h1>DevTools is open. Access is blocked.</h1>";
-  // }, 10);
+  setTimeout(() => {
+    console.log('DevTools is open')
+      // alert('DevTools is detected. Please close DevTools to access the site.');
+        // window.location.reload(); // Tự động reload lại trang
+      // Ẩn hoặc khóa giao diện nếu DevTools mở
+      document.body.innerHTML = "<h1>DevTools is open. Access is blocked.</h1>";
+  }, 10);
 }
 class DevToolsChecker extends Error {
   get message() {
@@ -37,16 +36,25 @@ class DevToolsChecker extends Error {
 }
 export function App(props) {
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
-  const [isDevToolsBlocked, setIsDevToolsBlocked] = useState(false);
-
+  const [devToolsOpen, setDevToolsOpen] = useState(false);
+// Function to detect if DevTools is open
+const detectDevTools = () => {
+  let detected = false;
+  const start = new Date();
+  debugger; // This will pause execution when DevTools is open
+  const end = new Date();
+  
+  if (end - start > 100) {
+    detected = true;
+  }
+  setDevToolsOpen(detected); 
+  if (detected) {
+    throw new DevToolsChecker();
+  }
+};
   useEffect(() => {
     // Kiểm tra trình duyệt khi component được mount
     setIsBrowserSupported(isSupportedBrowser());
-    // Kiểm tra DevTools thông qua console.log
-    const detectDevTools = () => {
-      const devToolsChecker = new DevToolsChecker();
-      console.log(devToolsChecker);
-    };
 
     const handleKeyDown = (event) => {
       // Ngăn phím F12 và Ctrl+U (Xem mã nguồn)
@@ -59,53 +67,38 @@ export function App(props) {
       }
     };
     
-    // Kiểm tra ngay lập tức nếu DevTools đã mở
-    if (isDevToolsOpen()) {
-    console.log('DevTools is open1')
-      setIsDevToolsBlocked(true);
-        onDevTools(); // Gọi hàm cảnh báo khi phát hiện
-      alert('DevTools is detected. Please close DevTools to access the site0.');
-    }
 
     const handleContextMenu = (event) => {
       // Ngăn menu chuột phải
       event.preventDefault();
     };
-    const handleDevToolsDetection = () => {
-      // Phát hiện nếu DevTools mở khi resize cửa sổ
-      if (isDevToolsOpen()) {
-        setIsDevToolsBlocked(true);
-        alert('DevTools is detected. Please close DevTools to access the site1.');
-      }
-    };
-
-    detectDevTools(); // Kiểm tra khi trang load
     
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('resize', handleDevToolsDetection);
-    window.addEventListener('load', handleDevToolsDetection);
 
+    const interval = setInterval(detectDevTools, 1000); // Check every second
     // Cleanup các event listeners khi component bị unmount
     return () => {
+      clearInterval(interval);
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('resize', handleDevToolsDetection); // Bổ sung dòng này
-      window.addEventListener('load', handleDevToolsDetection);
     };
   }, []);
 
   if (!isBrowserSupported) {
-    return <div>Trình duyệt của bạn không được hỗ trợ để xem video này.</div>;
+    return <div>Your browser is not supported to view this video.</div>;
   }
   
-  if (isDevToolsBlocked) {
-    return <div>Vui lòng tắt DevTools để tiếp tục truy cập.</div>;
+  if (devToolsOpen) {
+    if (devToolsOpen) {
+      return <div>Please disable DevTools to continue accessing the site.</div>;
+    }
   }
 
   return (
+    
     <Routes>
-      <Route path="/video/:order_id/:video_id" element={<VideoPlayer />} />
+      <Route path="/video/:order_id/:video_id" element={<VideoPlayer  />} />
       {/* Có thể thêm các route khác ở đây nếu cần */}
     </Routes>
   );
