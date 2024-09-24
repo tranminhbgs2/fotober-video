@@ -9,11 +9,9 @@ const isSupportedBrowser = () => {
   const userAgentData = navigator.userAgentData;
   const plugins = navigator.plugins;
   //check cococ
-      document.body.innerHTML = "<h1>"+userAgent+"</h1>";
   if(plugins.length > 0) {
     const pluginNames = 'WebKit built-in PDF';
     for (let i = 0; i < plugins.length; i++) {
-      document.body.innerHTML += "<h1>"+plugins[i].name+"</h1>";
       console.log(plugins[i].name);
       if (pluginNames.includes(plugins[i].name)) {
         console.log(userAgent);
