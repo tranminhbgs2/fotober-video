@@ -23,12 +23,10 @@ function onDevTools () {
   setTimeout(console.clear.bind(console))
   setTimeout(() => {
     console.log('DevTools is open')
-      if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
       alert('DevTools is detected. Please close DevTools to access the site.');
         window.location.reload(); // Tự động reload lại trang
       // Ẩn hoặc khóa giao diện nếu DevTools mở
       document.body.innerHTML = "<h1>DevTools is open. Access is blocked.</h1>";
-    }
   }, 10);
 }
 class DevToolsChecker extends Error {
