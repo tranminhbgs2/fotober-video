@@ -8,12 +8,19 @@ const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
   const userAgentData = navigator.userAgentData;
   const plugins = navigator.plugins;
-  console.log(plugins);
-  console.log(navigator);
+  //check cococ
   if(plugins.length > 0) {
     const pluginNames = 'WebKit built-in PDF';
     for (let i = 0; i < plugins.length; i++) {
+      console.log(plugins[i].name);
       if (pluginNames.includes(plugins[i].name)) {
+        console.log(userAgent);
+        if(userAgent.includes('chrome') ) {
+          if(userAgent.includes('edg')) {
+            return true;
+          }
+          return false;
+        }
         return false;
       }
     }
@@ -87,14 +94,14 @@ const detectDevTools = () => {
     };
     
     document.addEventListener('contextmenu', handleContextMenu);
-    document.addEventListener('keydown', handleKeyDown);
+    // document.addEventListener('keydown', handleKeyDown);
 
     const interval = setInterval(detectDevTools, 1000); // Check every second
     // Cleanup các event listeners khi component bị unmount
     return () => {
       clearInterval(interval);
       document.removeEventListener('contextmenu', handleContextMenu);
-      document.removeEventListener('keydown', handleKeyDown);
+      // document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
