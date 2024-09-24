@@ -94,14 +94,14 @@ const detectDevTools = () => {
     };
     
     document.addEventListener('contextmenu', handleContextMenu);
-    // document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
 
     const interval = setInterval(detectDevTools, 1000); // Check every second
     // Cleanup các event listeners khi component bị unmount
     return () => {
       clearInterval(interval);
       document.removeEventListener('contextmenu', handleContextMenu);
-      // document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
