@@ -24,7 +24,7 @@ function onDevTools () {
   setTimeout(() => {
     console.log('DevTools is open')
       alert('DevTools is detected. Please close DevTools to access the site.');
-        window.location.reload(); // Tự động reload lại trang
+        // window.location.reload(); // Tự động reload lại trang
       // Ẩn hoặc khóa giao diện nếu DevTools mở
       document.body.innerHTML = "<h1>DevTools is open. Access is blocked.</h1>";
   }, 10);
