@@ -43,15 +43,6 @@ export function App(props) {
       setIsDevToolsBlocked(true);
       alert('DevTools is detected. Please close DevTools to access the site.');
     }
-    const handleDevToolsDetection = () => {
-      // Kỹ thuật phát hiện DevTools mở
-      const isDevToolsOpen = window.outerHeight - window.innerHeight > 100 ||
-        window.outerWidth - window.innerWidth > 100;
-      if (isDevToolsOpen) {
-        alert('DevTools is detected. Please close DevTools to continue.');
-        // Optionally restrict access or redirect
-      }
-    };
 
     const handleContextMenu = (event) => {
       // Ngăn menu chuột phải
