@@ -27,12 +27,16 @@ const isCheckRequest = () => {
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
   const userAgentData = navigator.userAgentData;
+  console.log(navigator)
+  if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('android')) {
+    return true;
+  }
   if (userAgentData) {
     // Kiểm tra trình duyệt dựa trên userAgentData
     const brands = userAgentData.brands.map(({ brand }) => brand);
-    // if(brands.length > 0) {
-    //   return brands.some(brand => brand.toLowerCase()=== 'google chrome' || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'microsoft edge' || brand.toLowerCase() === 'brave' || brand.toLowerCase() === 'safari');
-    // }
+    if(brands.length > 0) {
+      return brands.some(brand => brand.toLowerCase()=== 'google chrome' || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'microsoft edge' || brand.toLowerCase() === 'brave' || brand.toLowerCase() === 'safari');
+    }
   }
   // Danh sách các trình duyệt hỗ trợ
   const supportedBrowsers = ['chrome', 'firefox', 'safari', 'brave', 'edg'];
