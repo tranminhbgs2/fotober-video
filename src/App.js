@@ -3,34 +3,32 @@ import { Route, Routes } from 'react-router-dom';
 import { VideoPlayer } from './VideoPlayer'; // Import component VideoPlayer
 import './App.css';
 
+const isCheckRequest = () => {
+  
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+}
+
 // Hàm kiểm tra trình duyệt
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
   const userAgentData = navigator.userAgentData;
   const plugins = navigator.plugins;
-  //check cococ
-  if(plugins.length > 0) {
-    const pluginNames = 'WebKit built-in PDF';
-    for (let i = 0; i < plugins.length; i++) {
-      console.log(plugins[i].name);
-      if (pluginNames.includes(plugins[i].name)) {
-        console.log(userAgent);
-        if(userAgent.includes('chrome') ) {
-          if(userAgent.includes('edg')) {
-            return true;
-          }
-          return false;
-        }
-        return false;
-      }
-    }
-  }
   if (userAgentData) {
     // Kiểm tra trình duyệt dựa trên userAgentData
     const brands = userAgentData.brands.map(({ brand }) => brand);
     console.log(brands);
     if(brands.length > 0) {
-      return brands.some(brand => brand.toLowerCase().includes('google chrome') || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'edge' || brand.toLowerCase() === 'brave');
+      return brands.some(brand => brand.toLowerCase()=== 'google chrome' || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'microsoft edge' || brand.toLowerCase() === 'brave' || brand.toLowerCase() === 'safari');
     }
   }
   // Danh sách các trình duyệt hỗ trợ
@@ -73,6 +71,7 @@ const detectDevTools = () => {
   }
 };
   useEffect(() => {
+    isCheckRequest();
     // Kiểm tra trình duyệt khi component được mount
     setIsBrowserSupported(isSupportedBrowser());
 
@@ -96,10 +95,10 @@ const detectDevTools = () => {
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
 
-    const interval = setInterval(detectDevTools, 1000); // Check every second
+    // const interval = setInterval(detectDevTools, 1000); // Check every second
     // Cleanup các event listeners khi component bị unmount
     return () => {
-      clearInterval(interval);
+      // clearInterval(interval);
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
     };

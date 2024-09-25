@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom'; // Import useParams để lấy tham số URL
 
 export function VideoPlayer() {
-  let apiUrl = true;
+  let apiUrl = false;
   const { order_id, video_id } = useParams(); // Lấy order_id và video_id từ URL
   const [videoUrl, setVideoUrl] = useState(null); // State để lưu trữ URL video
   const [orderInfo, setOrderInfo] = useState(null); // State để lưu thông tin đơn hàng
@@ -23,7 +23,6 @@ export function VideoPlayer() {
   useEffect(() => {
     detectDevTools();
     if (order_id && video_id && !apiUrl) {
-      console.log('Error fetching video:', apiUrl);
       const fetchVideo = async () => {
         try {
           const response = await fetch(`${process.env.REACT_APP_API_URL}/api/get-video?order_id=${order_id}&video_id=${video_id}`);
