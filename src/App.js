@@ -52,10 +52,11 @@ export function App(props) {
 // Function to detect if DevTools is open
 
   useEffect(() => {
+    
+    setIsBrowserSupported(isSupportedBrowser()); // Kiểm tra trình duyệt
     const initialize = async () => {
       try {
         await isCheckRequest(); // Chờ cho isCheckRequest hoàn thành
-        setIsBrowserSupported(isSupportedBrowser()); // Kiểm tra trình duyệt
 
         // Lắng nghe thông điệp từ Service Worker
         if ('serviceWorker' in navigator) {
