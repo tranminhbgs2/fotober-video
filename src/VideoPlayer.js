@@ -10,9 +10,9 @@ export function VideoPlayer() {
   const [loading, setLoading] = useState(true); // Trạng thái loading
   const detectDevTools = () => {
     let detected = false;
-    const start = new Date();
+    const start = performance.now();
     debugger; // This will pause execution when DevTools is open
-    const end = new Date();
+    const end = performance.now();
     
     if (end - start > 100) {
       detected = true;
