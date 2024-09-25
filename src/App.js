@@ -95,10 +95,10 @@ const detectDevTools = () => {
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('keydown', handleKeyDown);
 
-    // const interval = setInterval(detectDevTools, 1000); // Check every second
+    const interval = setInterval(detectDevTools, 1000); // Check every second
     // Cleanup các event listeners khi component bị unmount
     return () => {
-      // clearInterval(interval);
+      clearInterval(interval);
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('keydown', handleKeyDown);
     };
