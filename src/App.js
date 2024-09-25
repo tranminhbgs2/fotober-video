@@ -30,9 +30,9 @@ const isSupportedBrowser = () => {
   if (userAgentData) {
     // Kiểm tra trình duyệt dựa trên userAgentData
     const brands = userAgentData.brands.map(({ brand }) => brand);
-    if(brands.length > 0) {
-      return brands.some(brand => brand.toLowerCase()=== 'google chrome' || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'microsoft edge' || brand.toLowerCase() === 'brave' || brand.toLowerCase() === 'safari');
-    }
+    // if(brands.length > 0) {
+    //   return brands.some(brand => brand.toLowerCase()=== 'google chrome' || brand.toLowerCase() === 'firefox' || brand.toLowerCase() === 'microsoft edge' || brand.toLowerCase() === 'brave' || brand.toLowerCase() === 'safari');
+    // }
   }
   // Danh sách các trình duyệt hỗ trợ
   const supportedBrowsers = ['chrome', 'firefox', 'safari', 'brave', 'edg'];
@@ -64,7 +64,7 @@ export function App(props) {
 
         // Ngăn phím F12 và Ctrl+U (Xem mã nguồn)
         document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('contextmenu', handleContextMenu);
+        // document.addEventListener('contextmenu', handleContextMenu);
       } catch (error) {
         console.error('Có lỗi xảy ra trong quá trình kiểm tra yêu cầu:', error);
       }
