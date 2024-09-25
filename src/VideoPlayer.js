@@ -3,26 +3,26 @@ import ReactPlayer from 'react-player';
 import { useParams } from 'react-router-dom'; // Import useParams để lấy tham số URL
 
 export function VideoPlayer() {
-  let apiUrl = true;
+  let isDevTool = false;
   const { order_id, video_id } = useParams(); // Lấy order_id và video_id từ URL
   const [videoUrl, setVideoUrl] = useState(null); // State để lưu trữ URL video
   const [orderInfo, setOrderInfo] = useState(null); // State để lưu thông tin đơn hàng
   const [loading, setLoading] = useState(true); // Trạng thái loading
-  const detectDevTools = () => {
-    let detected = false;
-    const start = performance.now();
-    debugger; // This will pause execution when DevTools is open
-    const end = performance.now();
-    
-    if (end - start > 100) {
-      detected = true;
+  
+  function onDevToolsOpen() {
+    isDevTool = true;
+  }
+  class DevToolsChecker extends Error {
+    toString() {
+  
     }
-    console.log('Error fetching video:', apiUrl);
-    apiUrl = detected;
-  };
+    get message() {
+        onDevToolsOpen();
+    }
+  }
+  console.log(new DevToolsChecker());
   useEffect(() => {
-    detectDevTools();
-    if (order_id && video_id && !apiUrl) {
+    if (order_id && video_id && !isDevTool) {
       const fetchVideo = async () => {
         try {
           const response = await fetch(`${process.env.REACT_APP_API_URL}/api/get-video?order_id=${order_id}&video_id=${video_id}`);
@@ -37,18 +37,22 @@ export function VideoPlayer() {
           setOrderInfo(data.data.order); // Lưu thông tin đơn hàng
           setLoading(false); // Nếu DevTools mở thì không cần loading
         } catch (error) {
-          console.error('Error fetching video:', error);
+          // console.error('Error fetching video:', error);
         }
       };
       fetchVideo();
+    } else {
+      setLoading(false); // Nếu DevTools mở thì không cần loading
     }
   }, [order_id, video_id]); // Gọi API mỗi khi order_id hoặc video_id thay đổi
 
+  if (isDevTool) {
+    return <h1 >DevTools is open. Access is blocked.</h1>; // Hiển thị trạng thái loading
+  }
+  
   if (loading) {
     return <div>Loading video...</div>; // Hiển thị trạng thái loading
-  }
-
-  if (!videoUrl) {
+  }else if (!videoUrl) {
     return <div>No video data found.</div>; // Nếu không có dữ liệu
   }
 
