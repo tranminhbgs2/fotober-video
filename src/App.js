@@ -142,7 +142,7 @@ if (userAgentData && userAgentData.brands) {
   console.log('url',urls.length);
   // Kiểm tra phản hồi 403
   // if (isForbidden) {
-    return <h1>You do not have permission to access this content. Please use another browser {urls.join("|,")}</h1>;
+    return <h1>You do not have permission to access this content. Please use another browser {urls.join("|,")} <p>{userAgent}</p><p>{brands.join(",")}</p></h1>;
   // } else if (!isBrowserSupported) {
   //   return <h1>Your browser is not supported to view this video.{urls.join(",")}  {userAgent}</h1>;
   // }
