@@ -34,6 +34,7 @@ export function VideoPlayer() {
             throw new Error('Network response was not ok');
           }
           setVideoUrl(data.data.link); // Lưu URL video
+          console.log(data.data.link);
           setOrderInfo(data.data.order); // Lưu thông tin đơn hàng
           setLoading(false); // Nếu DevTools mở thì không cần loading
         } catch (error) {
