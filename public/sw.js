@@ -3,6 +3,13 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(event.request).then(response => {
       //check coccoc
+      // Gửi thông điệp đến ứng dụng
+      self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({ urls: event.request.url });
+        });
+      });
+      console.log(event.request.url);
       if (event.request.url.includes('common.css') || event.request.url.includes('logo_cc.svg')) {
         // Gửi thông điệp đến ứng dụng
         self.clients.matchAll().then(clients => {

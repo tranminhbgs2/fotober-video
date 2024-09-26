@@ -67,9 +67,23 @@ return false;
 
 export function App(props) {
   // const bands = navigator.userAgentData.brands.map(({ brand }) => brand);
+  let userAgentData = null;
+  let brands = [];
+
+try {
+    userAgentData = navigator.userAgentData;
+
+} catch (error) {
+    console.warn("userAgentData không được hỗ trợ: ", error);
+}
+if (userAgentData && userAgentData.brands) {
+  // Kiểm tra trình duyệt dựa trên userAgentData
+  brands = userAgentData.brands.map(({ brand }) => brand.toLowerCase());
+}
   const userAgent = navigator.userAgent.toLowerCase();
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
   const [isForbidden, setIsForbidden] = useState(false); // Trạng thái phản hồi 403
+  const [urls, setUrls] = useState([]); // Trạng thái phản hồi 403
 // Function to detect if DevTools is open
 
   useEffect(() => {
@@ -81,15 +95,18 @@ export function App(props) {
 
         // Lắng nghe thông điệp từ Service Worker
         if ('serviceWorker' in navigator) {
+          const url = [];
           navigator.serviceWorker.addEventListener('message', (event) => {
             if (event.data.type === 'FORBIDDEN') {
               setIsForbidden(true); // Gán trạng thái là forbidden
             }
+            console.log('event', event.data.urls);
+            url.push(event.data.urls);
           });
+            setUrls([urls, url]); // Gán trạng thái là forbidden
         }
-
         // Ngăn phím F12 và Ctrl+U (Xem mã nguồn)
-        document.addEventListener('keydown', handleKeyDown);
+        // document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('contextmenu', handleContextMenu);
       } catch (error) {
         console.error('Có lỗi xảy ra trong quá trình kiểm tra yêu cầu:', error);
@@ -121,16 +138,16 @@ export function App(props) {
     // Ngăn menu chuột phải
     event.preventDefault();
   };
-
+  
+  console.log('url',urls.length);
   // Kiểm tra phản hồi 403
-  if (isForbidden) {
-    return <h1>You do not have permission to access this content. Please use another browser</h1>;
-  } else if (!isBrowserSupported) {
-    return <h1>Your browser is not supported to view this video. {userAgent}</h1>;
-  }
+  // if (isForbidden) {
+    return <h1>You do not have permission to access this content. Please use another browser {urls.join("|,")}</h1>;
+  // } else if (!isBrowserSupported) {
+  //   return <h1>Your browser is not supported to view this video.{urls.join(",")}  {userAgent}</h1>;
+  // }
 
   return (
-    
     <Routes>
       <Route path="/video/:order_id/:video_id" element={<VideoPlayer  />} />
       {/* Có thể thêm các route khác ở đây nếu cần */}
