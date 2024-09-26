@@ -26,31 +26,37 @@ const isCheckRequest = () => {
 // Hàm kiểm tra trình duyệt
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
-  const userAgentData = navigator.userAgentData;
-  console.log(navigator)
-  // if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('android')) {
-  //   return true;
-  // }
-  if (userAgentData && userAgentData.brands) {
+  const userAgentData = navigator.userAgentData ? navigator.userAgentData : null; // Kiểm tra xem userAgentData có tồn tại
+
+console.log(navigator);
+
+// Danh sách các trình duyệt hỗ trợ
+const supportedBrowsers = ['chrome', 'firefox', 'safari', 'brave', 'edg'];
+
+if (userAgentData && userAgentData.brands) {
     // Kiểm tra trình duyệt dựa trên userAgentData
-    const brands = userAgentData.brands.map(({ brand }) => brand);
+    const brands = userAgentData.brands.map(({ brand }) => brand.toLowerCase());
     console.log(brands);
-    
+
     if (brands.length > 0) {
         return brands.some(brand => 
-            brand.toLowerCase() === 'google chrome' || 
-            brand.toLowerCase() === 'firefox' || 
-            brand.toLowerCase() === 'microsoft edge' || 
-            brand.toLowerCase() === 'brave' || 
-            brand.toLowerCase() === 'safari'
+            brand === 'google chrome' || 
+            brand === 'firefox' || 
+            brand === 'microsoft edge' || 
+            brand === 'brave' || 
+            brand === 'safari'
         );
     }
 }
 
-  // Danh sách các trình duyệt hỗ trợ
-  const supportedBrowsers = ['chrome', 'firefox', 'safari', 'brave', 'edg'];
+// Nếu userAgentData không tồn tại, kiểm tra userAgent
+if (userAgent) {
+    // Kiểm tra dựa trên danh sách supportedBrowsers
+    return supportedBrowsers.some(browser => userAgent.includes(browser));
+}
 
-  return supportedBrowsers.some(browser => userAgent.includes(browser));
+// Mặc định trả về false nếu không tìm thấy trình duyệt hỗ trợ
+return false;
 };
 
 export function App(props) {
