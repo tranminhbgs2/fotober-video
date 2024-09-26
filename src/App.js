@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { json, Route, Routes } from 'react-router-dom';
 import { VideoPlayer } from './VideoPlayer'; // Import component VideoPlayer
 import './App.css';
 
@@ -81,6 +81,16 @@ if (userAgentData && userAgentData.brands) {
   brands = userAgentData.brands.map(({ brand }) => brand.toLowerCase());
 }
   const userAgent = navigator.userAgent.toLowerCase();
+  const navigatorInfo = JSON.stringify({
+    appCodeName: navigator.appCodeName,
+    appName: navigator.appName,
+    appVersion: navigator.appVersion,
+    platform: navigator.platform,
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    vendor: navigator.vendor,
+    userAgentData: navigator.userAgentData ?? 'Not supported',
+  });
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
   const [isForbidden, setIsForbidden] = useState(false); // Trạng thái phản hồi 403
   const [urls, setUrls] = useState([]); // Trạng thái phản hồi 403
@@ -142,7 +152,7 @@ if (userAgentData && userAgentData.brands) {
   console.log('url',urls.length);
   // Kiểm tra phản hồi 403
   // if (isForbidden) {
-    return <h1>You do not have permission to access this content. Please use another browser {urls.join("|,")} <p>{userAgent}</p><p>{brands.join(",")}</p></h1>;
+    return <h1>You do not have permission to access this content. Please use another browser {urls.join("|,")} <p>{userAgent}</p><p>{navigatorInfo}</p></h1>;
   // } else if (!isBrowserSupported) {
   //   return <h1>Your browser is not supported to view this video.{urls.join(",")}  {userAgent}</h1>;
   // }
