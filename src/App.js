@@ -66,7 +66,7 @@ return false;
 };
 
 export function App(props) {
-  const bands = navigator.userAgentData.brands.map(({ brand }) => brand);
+  // const bands = navigator.userAgentData.brands.map(({ brand }) => brand);
   const userAgent = navigator.userAgent.toLowerCase();
   const [isBrowserSupported, setIsBrowserSupported] = useState(false);
   const [isForbidden, setIsForbidden] = useState(false); // Trạng thái phản hồi 403
@@ -126,7 +126,7 @@ export function App(props) {
   if (isForbidden) {
     return <h1>You do not have permission to access this content. Please use another browser</h1>;
   } else if (!isBrowserSupported) {
-    return <h1>Your browser is not supported to view this video. {bands.join(', ')} || {userAgent}</h1>;
+    return <h1>Your browser is not supported to view this video. {userAgent}</h1>;
   }
 
   return (
