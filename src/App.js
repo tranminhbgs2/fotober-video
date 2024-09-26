@@ -26,7 +26,13 @@ const isCheckRequest = () => {
 // Hàm kiểm tra trình duyệt
 const isSupportedBrowser = () => {
   const userAgent = navigator.userAgent.toLowerCase();
-  const userAgentData = navigator.userAgentData ? navigator.userAgentData : null; // Kiểm tra xem userAgentData có tồn tại
+  let userAgentData = null;
+
+try {
+    userAgentData = navigator.userAgentData;
+} catch (error) {
+    console.warn("userAgentData không được hỗ trợ: ", error);
+}
 
 console.log(navigator);
 
