@@ -69,7 +69,7 @@ export function App(props) {
 
         // Ngăn phím F12 và Ctrl+U (Xem mã nguồn)
         document.addEventListener('keydown', handleKeyDown);
-        // document.addEventListener('contextmenu', handleContextMenu);
+        document.addEventListener('contextmenu', handleContextMenu);
       } catch (error) {
         console.error('Có lỗi xảy ra trong quá trình kiểm tra yêu cầu:', error);
       }
